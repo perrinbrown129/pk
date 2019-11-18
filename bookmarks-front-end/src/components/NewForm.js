@@ -6,7 +6,8 @@ class NewForm extends Component {
     super(props);
     this.state = {
       name: "",
-      url: ""
+      url: "",
+      description: ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -23,11 +24,13 @@ class NewForm extends Component {
     const baseURL = this.props.baseURL;
     const response = await axios.post(`${baseURL}/bookmarks`, {
       name: this.state.name,
-      url: this.state.url
+      url: this.state.url,
+      description: this.state.description
     });
     this.setState({
       name: "",
-      url: ""
+      url: "",
+      description: ""
     });
     this.props.getBookmarks();
   }
@@ -52,6 +55,15 @@ class NewForm extends Component {
           onChange={this.handleChange}
           value={this.state.url}
           placeholder="Add URL"
+        />
+        <label htmlFor="description"></label>
+        <input
+          type="text"
+          id="description"
+          name="description"
+          onChange={this.handleChange}
+          value={this.state.description}
+          placeholder="Add Description"
         />
         <input type="submit" value="Submit" />
       </form>
