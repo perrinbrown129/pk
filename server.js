@@ -1,10 +1,22 @@
 const express = require("express");
 const app = express();
+const PORT = 3003;
+const mongoose = require('mongoose')
 
-app.get("/", (req, res) => {
-  res.send("hello world");
-});
+const bookmarksContoller = require('./controllers/bookmarks.js')
 
-app.listen(3000, () => {
+//Middleware
+app.use(express.json());
+
+app.use('/bookmarks', bookmarksContoller)
+
+mongoose.connect('mongodb://localhost:27017/holidays', { 
+    useNewUrlParser: true 
+})
+mongoose.connection.once('open', ()=>{
+    console.log('connected to mongoose...')
+})
+
+app.listen(PORT, () => {
   console.log("listening");
 });
