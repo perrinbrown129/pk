@@ -1,8 +1,8 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const bookmarkSchema = mongoose.Schema({
-    title: String,
-    url: String
-})
+  name: String,
+  url: String
+});
 
-module.exports = mongoose.model('Bookmark', bookmarkSchema)
+module.exports = mongoose.model("Bookmark", bookmarkSchema);
