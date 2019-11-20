@@ -12,12 +12,12 @@ class Show extends React.Component {
             <span>Celebrated:</span>{" "}
             {this.props.holiday.celebrated ? "celebrated" : "not celebrated"}{" "}
           </h6> */}
-          <h6>
+          <h5>
             <span>URL:</span> {this.props.bookmark.url}
-          </h6>
-          <p>
+          </h5>
+          <h5>
             <span>Description:</span> {this.props.bookmark.description}
-          </p>
+          </h5>
         </div>
       </>
     );
