@@ -7,7 +7,8 @@ class NewForm extends Component {
     this.state = {
       name: "",
       url: "",
-      description: ""
+      description: "",
+      visited: ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -30,7 +31,8 @@ class NewForm extends Component {
     this.setState({
       name: "",
       url: "",
-      description: ""
+      description: "",
+      visited: ""
     });
     this.props.getBookmarks();
   }
@@ -65,7 +67,7 @@ class NewForm extends Component {
           value={this.state.description}
           placeholder="Add Description"
         />
-        <input type="submit" value="Submit" />
+        <input type="submit" value="SUBMIT" />
       </form>
     );
   }

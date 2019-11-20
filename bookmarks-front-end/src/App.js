@@ -3,7 +3,7 @@ import "./App.css";
 import axios from "axios";
 import NewForm from "./components/NewForm.js";
 import Show from "./components/Show";
-import UpdateForm from "./components/UpdateForm.js";
+
 let baseURL = process.env.REACT_APP_BASEURL;
 
 if (process.env.NODE_ENV === "development") {
@@ -22,36 +22,19 @@ class App extends Component {
     this.getBookmarks = this.getBookmarks.bind(this);
     this.deleteBookmark = this.deleteBookmark.bind(this);
     this.getBookmark = this.getBookmark.bind(this);
+    this.toggleVisited = this.toggleVisited.bind(this);
+  }
+
+  componentDidMount() {
+    this.getBookmarks();
   }
 
   async getBookmarks() {
     const response = await axios(`${baseURL}/bookmarks`);
-    const data = response.data;
-    this.setState({
-      bookmarks: data
-    });
-  }
+    const bookmarks = response.data;
 
-  async componentDidMount() {
-    this.getBookmarks();
+    this.setState({ bookmarks: bookmarks });
   }
-
-  // async editBookmark(selectedBookmark) {
-  //   const updatedBookmarks = this.state.bookmarks.map((bookmark) => {
-  //     if (bookmark._id === selectedBookmarkId) {
-  //       const updatedBookmark = {
-  //         ...selectedBookmark,
-  //         celebrated: !selectedHoliday.celebrated
-  //       }
-  //         return updatedHoliday
-  //       } else {
-  //         return holiday
-  //       }
-  //     })
-  //     this.setState({
-  //       holidays: updatedHolidays
-  //     })
-  //   }
 
   async deleteBookmark(id) {
     await axios.delete(`${baseURL}/bookmarks/${id}`);
@@ -65,8 +48,24 @@ class App extends Component {
   }
 
   getBookmark(bookmark) {
+    this.setState({ bookmark: bookmark });
+  }
+
+  async toggleVisited(selectedBookmark, selectedBookmarkId) {
+    console.log(selectedBookmark);
+    const updatedBookmarks = this.state.bookmarks.map(bookmark => {
+      if (bookmark._id === selectedBookmarkId) {
+        const updatedBookmark = {
+          ...selectedBookmark,
+          visited: !selectedBookmark.visited
+        };
+        return updatedBookmark;
+      } else {
+        return bookmark;
+      }
+    });
     this.setState({
-      bookmark: bookmark
+      bookmarks: updatedBookmarks
     });
   }
 
@@ -88,14 +87,30 @@ class App extends Component {
                       {bookmark.name}
                     </a>
                   </td>
-                  <td> {bookmark.url}</td>
+                  <td
+                    className={bookmark.visited ? "visited" : null}
+                    onDoubleClick={() =>
+                      this.toggleVisited(bookmark, bookmark._id)
+                    }
+                  >
+                    {" "}
+                    {bookmark.url}
+                  </td>
                   {/* <td>{bookmark.description}</td> */}
-                  <td onClick={() => this.deleteBookmark(bookmark._id)}>X</td>
+                  <td>
+                    {" "}
+                    <button onClick={() => this.deleteBookmark(bookmark._id)}>
+                      DELETE{" "}
+                    </button>
+                  </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
+        <br />
+        <br />
+        <br />
         {this.state.bookmark && <Show bookmark={this.state.bookmark} />}
       </div>
     );
